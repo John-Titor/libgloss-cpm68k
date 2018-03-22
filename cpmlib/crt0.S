@@ -20,11 +20,3 @@ _start:
 
 		suba.l		%a6, %a6		// clear the frame pointer
 		jmp		_main			// jump to next-level startup code
-
-
-		// _exit(retcode)
-		.section .text.exit
-		.global _exit
-_exit:		clr.l		%d0			// BDOS function 0
-		trap		#2			// ... will exit
-

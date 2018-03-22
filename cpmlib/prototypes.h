@@ -41,7 +41,7 @@ extern VOID __main(BYTE *com, WORD len);
 // _main.c
 extern BYTE *__tname;
 extern BYTE *__lname;
-extern int _main(void);
+extern int _main(uintptr_t basepage);
 
 // __open.c
 extern WORD __open(WORD ch, REG BYTE *filnam, WORD bdosfunc);

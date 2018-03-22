@@ -3,9 +3,13 @@
 #include <string.h>
 
 int 
-main(int argc __unused, const char **argv __unused)
+main(int argc, const char **argv)
 {
     printf("hello, CP/M-%dK from newlib\n", 68);
+    printf("%d args\n", argc);
+    for (int i = 0; i < argc; i++) {
+        printf("%d: %s\n", i, argv[i]);
+    }
     puts("name?");
     char s[128];
     gets(s);
