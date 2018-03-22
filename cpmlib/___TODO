@@ -1,0 +1,6 @@
+In no particular order
+
+* make open() behave like it should
+* implement fstat()
+* add rename(), unlink()
+* tests
