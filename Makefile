@@ -9,10 +9,22 @@ CXX		 = $(TOOL_PREFIX)c++
 LD		 = $(TOOL_PREFIX)cc
 
 ARCHFLAGS	 = -m68000
-OPTFLAGS	 = -g -O0 -ffunction-sections -fdata-sections
+OPTFLAGS	 = -g \
+		   -MMD \
+		   -O0 \
+		   -ffunction-sections \
+		   -fdata-sections
+WARNINGS	 = -Wall \
+		   -Wextra \
+		   -Wmisleading-indentation \
+		   -Wstrict-prototypes \
+		   -Wold-style-definition \
+		   -Wmissing-parameter-type \
+		   -Wmissing-prototypes \
+		   -Wmissing-declarations
 ASFLAGS		 = $(ARCHFLAGS)
-CFLAGS		 = $(ARCHFLAGS) $(OPTFLAGS) -std=gnu11 -Wall
-CXXFLAGS	 = $(ARCHFLAGS) $(OPTFLAGS) -std=gnu++11 -Wall
+CFLAGS		 = $(ARCHFLAGS) $(OPTFLAGS) -std=gnu11 $(WARNINGS)
+CXXFLAGS	 = $(ARCHFLAGS) $(OPTFLAGS) -std=gnu++11 $(WARNINGS)
 LDFLAGS		 = $(ARCHFLAGS) \
 		   -nostartfiles \
 		   -Wl,-static \
@@ -22,10 +34,10 @@ LDFLAGS		 = $(ARCHFLAGS) \
 		   -Wl,-e_start \
 		   -Wl,-gc-sections \
 		   -Wl,-zmax-page-size=4 \
-		   -Wl,-zcommon-page-size=4 \
+		   -Wl,-zcommon-page-size=4
 
-SSRCS		 = $(wildcard *.S)
-CSRCS		 = $(wildcard *.c)
+SSRCS		 = $(wildcard *.S) $(wildcard cpmlib/*.S)
+CSRCS		 = $(wildcard *.c) $(wildcard cpmlib/*.c)
 CXXSRCS		 = $(wildcard *.cpp)
 
 
@@ -60,4 +72,6 @@ $(COBJS):build/%.o:%.c
 $(CXXOBJS):build/%.o:%.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CFLAGS) -c -o $@ $<
+
+-include $(OBJS:.o=.d)
 
