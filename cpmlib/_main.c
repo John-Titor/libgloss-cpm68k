@@ -17,6 +17,15 @@ static void parse_args(char *tail, int *argcp, char ***argvp);
 static void add_arg(char *arg, int *argcp, char ***argvp);
 static void err(const char *msg);
 
+// init / fini function collections
+typedef void (*TorFuncPtr)(void);
+extern TorFuncPtr __init_array_start;
+extern TorFuncPtr __init_array_end;
+extern TorFuncPtr __preinit_array_start;
+extern TorFuncPtr __preinit_array_end;
+extern TorFuncPtr __fini_array_start;
+extern TorFuncPtr __fini_array_end;
+
 int
 _main(uintptr_t basepage)
 {
@@ -25,7 +34,13 @@ _main(uintptr_t basepage)
     _open(__tname,WRITE,0);                 /* Open STDOUT              */
     _open(__tname,WRITE,0);                 /* Open STDERR              */
 
-    // XXX init functions
+    // call initializer functions
+    for (TorFuncPtr *ifp = &__preinit_array_start; ifp < &__preinit_array_end; ifp++) {
+        (*ifp)();
+    }
+    for (TorFuncPtr *ifp = &__init_array_start; ifp < &__init_array_end; ifp++) {
+        (*ifp)();
+    }
 
     // parse command tail
     int argc = 0;
@@ -38,6 +53,11 @@ _main(uintptr_t basepage)
 void
 _exit(int code __unused)
 {
+    // call terminator functions
+    for (TorFuncPtr *tfp = &__fini_array_start; tfp < &__fini_array_end; tfp++) {
+        (*tfp)();
+    }
+
     __OSIF(EXIT, 0);
     for (;;);
 }
@@ -105,4 +125,3 @@ err(const char *msg)
     __OSIF(C_WRITESTR, msg);
     exit(1);
 }
-
