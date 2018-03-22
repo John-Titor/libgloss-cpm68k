@@ -35,11 +35,6 @@ off_t _filesz(                                  /****************************/
                 return(FAILURE);                /*  Can't: EBADF            */
         if(fp->flags&(ISTTY|ISLPT))             /* Non disk file?           */
                 return(0);                      /*                          */
-#if PCDOS /*================================================================*/
-        fp->offset = (fp->fcb).fcb_filsiz;      /* simple, eh?              */
-#endif    /*================================================================*/
-
-#if CPM   /*================================================================*/
 
     if( fp->flags & DIRTY ) {                   /* File been used?          */
         fp->offset = fp->hiwater;               /* yes: this must be right  */
@@ -84,7 +79,6 @@ off_t _filesz(                                  /****************************/
           fp->offset = (xsector+1) << 7;        /* set to end of last record*/
         }                                       /****************************/
     }                                           /****************************/
-#endif    /*================================================================*/
     fp->hiwater = fp->offset;                   /* whatever happened, set it*/
     fp->flags |= ATEOF;                         /* make sure they know      */
     return(fp->offset);                         /* this is it               */

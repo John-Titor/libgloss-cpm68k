@@ -5,7 +5,7 @@
 int 
 main(int argc __unused, const char **argv __unused)
 {
-    printf("hello, CP/M-%dK\n", 68);
+    printf("hello, CP/M-%dK from newlib\n", 68);
     puts("name?");
     char s[128];
     gets(s);

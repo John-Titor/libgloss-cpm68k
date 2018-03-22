@@ -1,6 +1,5 @@
 In no particular order
 
-* make open() behave like it should
-* implement fstat()
+* sort out stty/gtty 
 * add rename(), unlink()
 * tests

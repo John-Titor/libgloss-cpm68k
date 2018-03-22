@@ -26,11 +26,14 @@
 *****************************************************************************/
 
 #include <unistd.h>
+#include <fcntl.h>
 
 #include        "portab.h"                      /*                          */
 #include        "osif.h"                        /*                          */
 #include        "osiferr.h"                     /*                          */
 #include        "prototypes.h"
+
+#define O_BINARY  0x10000                       /* also in newlib CFLAGS    */
 
 WORD    _open (                                 /****************************/
         BYTE    *fname,                         /* -> File name             */
@@ -73,6 +76,41 @@ WORD    _open (                                 /****************************/
         lseek(ch->chan, 0L, 0);                 /*       hi water mark      */
         return(ich);                            /*       Return Channel #   */
 }                                               /****************************/
+
+int     open(
+        const char *fname,                      /* -> File name             */
+        int oflags,                             /* Posix open flags         */
+        ...)                                    /* create mode is ignored   */
+{
+        BOOLEAN rdonly = ((oflags & (O_WRONLY | O_RDWR)) == 0);
+        WORD    mode = rdonly ? READ : 0;
+        WORD    xtype = (oflags & O_BINARY) ? 1 : 0;
+        WORD    ret = 0;
+                                                /****************************/
+        ret = _open((BYTE *)fname, mode, xtype); /* try to open the file    */
+                                                /****************************/
+        if(oflags & O_CREAT)                    /* create enabled?          */
+        {                                       /*                          */
+                if((ret == FAILURE) &&          /* open failed              */
+                   (errno == ENOENT))           /*   because not exist?     */
+                {                               /*                          */
+                        if (rdonly)             /* creating a readonly file */
+                                RETERR(FAILURE,EINVAL); /* makes no sense   */
+                        ret = creat((BYTE *)fname, xtype); /* try create    */
+                }                               /*                          */
+                else if (oflags & O_EXCL)       /* file should not exist?   */
+                {                               /*                          */
+                        close(ret);             /* so close it              */
+                        RETERR(FAILURE, EEXIST); /* and nfg                 */
+                }                               /****************************/
+        }                                       /*                          */
+                                                /*                          */
+        if((ret != FAILURE) && (oflags & O_APPEND)) /* append mode?         */
+                lseek(ret,0,2);                 /* emulate by seek to end   */
+                                                /****************************/
+        return ret;                             /* return channel #         */
+                                                /****************************/
+}
 
 #if 0
 WORD    open(fname,mode)                        /* CLEAR FUNCTION ***********/
