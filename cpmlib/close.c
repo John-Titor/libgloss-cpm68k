@@ -24,6 +24,7 @@
 #include "portab.h"
 #include "osif.h"
 #include "osiferr.h"
+#include "prototypes.h"
 
                                                 /****************************/
 static char eof = '\x1a';                       /* End of file for ASCII    */

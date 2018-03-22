@@ -25,43 +25,13 @@
  *                                                                          
  ****************************************************************************/
 
-/*
- *      "machine.h": to determine what kind of machine you want to run on.
- */
+#pragma once
 
-#ifdef pcdos
-#define PCDOS   1       /* IBM PC DOS */
-#define CPM     0       /* CP/M version 2.2 */
-#else                           /* assume CP/M: */
 #define CPM     1       /* CP/M version 2.2 */
-#define PCDOS   0       /* IBM PC DOS */
-#endif
-
-#define I8086   0       /* Intel 8086/8088 */
-#define DRC     0       /* Digital Research C Compiler */
-
-/****   Unused DEFINEs:      ****/ 
-/*      #ifdef UNdefined        */
-
-                        /*** Processor ***/
 #define MC68000 1       /* Motorola 68000 */
-#define VAX     0       /* DEC VAX */
-#define PDP11   0       /* DEC PDP-11 */
-#define Z8000   0       /* Zilog Z8000 */
-
-                        /*** Operating System ***/
 #define CPM68K  1       /* CP/M 68000 ver 2.2 */
-#define CCPM    0       /* Concurrent (multi-tasking) */
-#define CPM3    0       /* CP/M version 3.x (Concurrent & Plus) */
-#define CPM4    0       /* CP/M version 4.x (Portable Concurrent) */
-#define UNIX    0       /* UNIX */
-#define VMS     0       /* DEC VMS */
 
-                        /*** Compiler ***/
-#define ALCYON  1       /* Alcyon C Compiler */
-
-/* #endif               */ 
-/************************/
+#include "portab.h"
 
 
 /****************************************************************************
@@ -216,7 +186,5 @@ struct word_struct{                             /*                          */
         WORD lwhi;                              /*                          */
 };                                              /*                          */
 #endif                                          /****************************/
-
-#include "prototypes.h"
 
 /*************************** end of osif.h **********************************/

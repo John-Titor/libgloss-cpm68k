@@ -18,6 +18,7 @@
 #include        "portab.h"                      /* Include std definitions  */
 #include        "osif.h"                        /* Also CP/M ones           */
 #include        "osiferr.h"                     /* To set error vars        */
+#include        "prototypes.h"
 
 #ifdef MAXF5                                    /*--------------------------*/
 #  define       MAXCCBS 5                       /* Maximum Num CCBs         */

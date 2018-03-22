@@ -15,6 +15,7 @@
 
 #include "portab.h"
 #include "osif.h"
+#include "prototypes.h"
 
 int isatty(                                     /* CLEAR FUNCTION ***********/
         int fd)                                 /* file des returned by open*/

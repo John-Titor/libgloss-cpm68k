@@ -21,6 +21,7 @@
 #include "portab.h"
 #include "osif.h"
 #include "osiferr.h"
+#include "prototypes.h"
 
 off_t _filesz(                                  /****************************/
         int fd)                                 /* file descriptor          */

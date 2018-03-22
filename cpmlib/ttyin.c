@@ -29,6 +29,8 @@
 #include "portab.h"
 #include "osif.h"
 #include "sgtty.h"
+#include "prototypes.h"
+
 #define Bytesized 0xFF
 //#define RAWIO XXX TODO implement this
 

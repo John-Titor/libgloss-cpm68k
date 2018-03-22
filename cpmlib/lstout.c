@@ -17,6 +17,7 @@
 
 #include "portab.h"
 #include "osif.h"
+#include "prototypes.h"
 
 ssize_t _lstout(                                /***************************/
         BYTE *buffer)                           /* -> 1st char output      */

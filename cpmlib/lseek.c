@@ -32,6 +32,7 @@
 #include "portab.h"
 #include "osif.h"
 #include "osiferr.h"
+#include "prototypes.h"
 
 LONG    lseek(                                  /* CLEAR FUNCTION ***********/
                                                 /*                          */

@@ -20,7 +20,9 @@
 
 #include "portab.h"
 #include "osif.h"
+#include "osiferr.h"
 #include "sgtty.h"
+#include "prototypes.h"
 
 ssize_t _wrtchr(                                /****************************/
                                                 /*                          */
@@ -44,6 +46,8 @@ ssize_t _wrtchr(                                /****************************/
                 fnout = _ttyout;                /*   use that function      */
         else if( fp->flags & ISLPT )            /* If LST Output            */
                 fnout = _lstout;                /*   use this function      */
+        else                                    /* If not hooked up         */
+                RETERR(-1,ENOTTY);              /*   that's an error        */
         if( fp->flags & ISSPTTY )               /* Special Output handling? */
         {                                       /*   yes...                 */
                 tyb = (struct sgttyb*)&(fp->fcb); /* assume info stored here  */ // XXX should be a union

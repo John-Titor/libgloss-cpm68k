@@ -4,7 +4,7 @@
 
 
 int
-fstat(int fd, struct stat *buf)
+fstat(int fd __unused, struct stat *buf __unused)
 {
     errno = ENOSYS; // XXX TODO implement
     return -1;

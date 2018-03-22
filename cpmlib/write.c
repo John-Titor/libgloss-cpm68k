@@ -29,6 +29,8 @@
 #include "osif.h"
 #include "osiferr.h"
 
+#include "prototypes.h"
+
 ssize_t write(                                  /* CLEAR FUNCTION ***********/
                                                 /*                          */
         int             fd,                     /* File descriptor          */

@@ -1,3 +1,4 @@
+#pragma once
 
 /* sgtty.h - tty control information */
 /*      Note reduced contents for CP/M implementation... */

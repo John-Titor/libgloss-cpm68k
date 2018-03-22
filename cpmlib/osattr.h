@@ -10,6 +10,8 @@
 *       11/4/83 whf     handle CCPM 3.1 & networking
 ****************************************************************************/
 
+#pragma once
+
 #ifndef OSATTR
 extern  unsigned short  os_version;             /* A contrived version num  */
 #if 0

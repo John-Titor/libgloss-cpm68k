@@ -3,13 +3,23 @@
 //
 
 #include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 
-int _main(void);
-extern int main(int argc, const char **argv, const char *envp);
+#include "prototypes.h"
+#include "osif.h"
+
+BYTE *__tname = "CON:"; // XXX TODO constify
+BYTE *__lname = "LST:";
 
 int
 _main(void)
 {
+    _chinit();                              /* Initialize channels      */
+    _open(__tname,READ,0);                  /* Open STDIN               */
+    _open(__tname,WRITE,0);                 /* Open STDOUT              */
+    _open(__tname,WRITE,0);                 /* Open STDERR              */
+
     // XXX ctors
     // XXX argv / argc
 

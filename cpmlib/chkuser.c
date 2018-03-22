@@ -15,6 +15,7 @@
 
 #include "portab.h"
 #include "osif.h"
+#include "prototypes.h"
                                                 /****************************/
 WORD _chkuser(                                  /*                          */
         WORD    newu)                          /* Desired user number      */

@@ -24,6 +24,7 @@
 #include "portab.h"
 #include "osif.h"
 #include "osiferr.h"
+#include "prototypes.h"
 
 #define NDEBUG
 #include <assert.h>

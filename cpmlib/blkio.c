@@ -30,6 +30,7 @@
 #include        "osif.h"
 #include        "osiferr.h"
 #include        "osattr.h"
+#include        "prototypes.h"
 
 #define MIN(x,y) ( ((x) < (y)) ? (x) : (y) )
 

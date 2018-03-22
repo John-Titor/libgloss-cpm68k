@@ -19,6 +19,7 @@
 #include "portab.h"
 #include "osif.h"
 #include "osiferr.h"
+#include "prototypes.h"
 
 ssize_t _rdbin(                                 /****************************/
                                                 /*                          */

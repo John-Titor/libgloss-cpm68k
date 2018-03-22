@@ -1,3 +1,5 @@
+#pragma once
+
 #include <sys/errno.h>
 
 #if 0

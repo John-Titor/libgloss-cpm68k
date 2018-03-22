@@ -11,7 +11,7 @@ LD		 = $(TOOL_PREFIX)cc
 ARCHFLAGS	 = -m68000
 OPTFLAGS	 = -g \
 		   -MMD \
-		   -O0 \
+		   -O2 \
 		   -ffunction-sections \
 		   -fdata-sections
 WARNINGS	 = -Wall \
@@ -21,7 +21,8 @@ WARNINGS	 = -Wall \
 		   -Wold-style-definition \
 		   -Wmissing-parameter-type \
 		   -Wmissing-prototypes \
-		   -Wmissing-declarations
+		   -Wmissing-declarations \
+		   -Wno-pointer-sign
 ASFLAGS		 = $(ARCHFLAGS)
 CFLAGS		 = $(ARCHFLAGS) $(OPTFLAGS) -std=gnu11 $(WARNINGS)
 CXXFLAGS	 = $(ARCHFLAGS) $(OPTFLAGS) -std=gnu++11 $(WARNINGS)

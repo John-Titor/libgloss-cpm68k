@@ -21,6 +21,7 @@
 #include "portab.h"
 #include "osif.h"
 #include "osiferr.h"
+#include "prototypes.h"
 
 #define OFFSECT   (fp->offset      & ~(SECSIZ-1))
 #define HIWSECT   ((fp->hiwater-1) & ~(SECSIZ-1))
