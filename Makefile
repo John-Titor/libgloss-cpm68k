@@ -1,13 +1,14 @@
-PROG		 = cpmtest
 
 CTNG		 = /Volumes/CTNG/m68k-unknown-elf/
 TOOL_PREFIX	 = $(CTNG)bin/m68k-unknown-elf-
 ELF2CPM		 = ../Emulators/py68k/tools/elf2cpm.py
 
+# Compiler / linker
 CC		 = $(TOOL_PREFIX)cc
 CXX		 = $(TOOL_PREFIX)c++
 LD		 = $(TOOL_PREFIX)cc
 
+# Compilation / link options
 ARCHFLAGS	 = -m68000
 OPTFLAGS	 = -g \
 		   -MMD \
@@ -37,23 +38,30 @@ LDFLAGS		 = $(ARCHFLAGS) \
 		   -Wl,-zmax-page-size=4 \
 		   -Wl,-zcommon-page-size=4
 
+# sources
 SSRCS		 = $(wildcard *.S) $(wildcard cpmlib/*.S)
 CSRCS		 = $(wildcard *.c) $(wildcard cpmlib/*.c)
 CXXSRCS		 = $(wildcard *.cpp)
 
-
+# derived objects
 SOBJS		 = $(addprefix build/,$(SSRCS:.S=.o))
 COBJS		 = $(addprefix build/,$(CSRCS:.c=.o))
 CXXOBJS		 = $(addprefix build/,$(CXXSRCS:.cpp=.o))
 OBJS		 = $(SOBJS) $(COBJS) $(CXXOBJS)
 
+# the resulting library object
+CPMLIB		 = build/cpmlib.o
+
 ELF		 = build/$(PROG).elf
 REL		 = build/$(PROG).rel
 
-all: $(REL)
+all: $(CPMLIB)
 
 clean:
 	rm -rf build
+
+$(CPMLIB): $(OBJS)
+	$(LD) $(LDFLAGS) -r -o $@ $(OBJS)
 
 $(REL): $(ELF)
 	$(ELF2CPM) $< $@
