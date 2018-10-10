@@ -1,7 +1,7 @@
 
 CTNG		 = /Volumes/CTNG/m68k-unknown-elf/
 TOOL_PREFIX	 = $(CTNG)bin/m68k-unknown-elf-
-ELF2CPM		 = ../Emulators/py68k/tools/elf2cpm.py
+ELF2CPM		 = tools/elf2cpm.py
 
 # Compiler / linker
 CC		 = $(TOOL_PREFIX)cc
