@@ -232,7 +232,7 @@ class ELFLoader(object):
                             raise RuntimeError('addend outside of text section')
                     elif relTarget < (len(text) + len(data)):
                         relType |= R_DATA
-                        if relAddend > len(text):
+                        if relAddend > len(data):
                             raise RuntimeError('addend outside of data section')
                     elif relTarget <= (len(text) + len(data) + bssSize):
                         # note, <= to allow pointer to _end, which is immediately *after* the BSS

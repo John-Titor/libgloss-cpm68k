@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # CP/M 68K executable format tools
 #
@@ -73,7 +73,7 @@ class CPMFile(object):
         if magic[0] == TYPE_CONTIG:
             fmt = '>HLLLLLLH'
         elif magic[0] == TYPE_NONCONTIG:
-            raise RuntimeError('non-contiguous text/data format not supported')
+            fmt = '>HLLLLLLHLL'
         else:
             raise RuntimeError('invalid header magic 0x{:04x}'.format(magic))
 
@@ -131,11 +131,12 @@ class CPMFile(object):
         Decode in-file relocations and produce a collection of only the interesting ones
 
         CP/M relocation words map 1:1 to words in the text, then data sections, so address
-        can be directly inferred from offset (and we are only supporting contiguous text,data)
+        can be directly inferred from offset
         """
 
-        fields = len(bytes) / 2
-        relocEntries = struct.unpack('>{}H'.format(fields), bytes)
+        fields = int(len(bytes) / 2)
+        fmt = f'>{fields}H'
+        relocEntries = struct.unpack(fmt, bytes)
 
         relocs = dict()
         size32 = False
@@ -258,9 +259,9 @@ if __name__ == '__main__':
     emit += ' reloc {}'.format(len(obj.relocs))
     print(emit)
     print('text')
-    hexdump(str(obj.text))
+    hexdump(obj.text)
     print('data')
-    hexdump(str(obj.data))
+    hexdump(obj.data)
     print('reloc')
     for reloc in sorted(obj.relocs):
         print('0x{:08x}: {:05x}'.format(reloc, obj.relocs[reloc]))
