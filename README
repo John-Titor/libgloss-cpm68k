@@ -1,0 +1,7 @@
+Newlib for CP/M-68K
+-------------------
+
+... more specifically, this is a port of the stdio parts of the CP/M C 
+library with the intent of providing the basic functions required by
+newlib, so that it can be used with gcc-m68k to produce CP/M-68K 
+executables.
