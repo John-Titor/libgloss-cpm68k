@@ -1,6 +1,5 @@
 
-CTNG		 = /Volumes/CTNG/m68k-unknown-elf/
-TOOL_PREFIX	 = $(CTNG)bin/m68k-unknown-elf-
+TOOL_PREFIX	 = m68k-elf-
 ELF2CPM		 = tools/elf2cpm.py
 
 # Compiler / linker
@@ -15,6 +14,7 @@ OPTFLAGS	 = -g \
 		   -O2 \
 		   -ffunction-sections \
 		   -fdata-sections
+
 WARNINGS	 = -Wall \
 		   -Wextra \
 		   -Wmisleading-indentation \
@@ -23,7 +23,9 @@ WARNINGS	 = -Wall \
 		   -Wmissing-parameter-type \
 		   -Wmissing-prototypes \
 		   -Wmissing-declarations \
-		   -Wno-pointer-sign
+		   -Wno-pointer-sign \
+		   -Wno-char-subscripts
+
 ASFLAGS		 = $(ARCHFLAGS)
 CFLAGS		 = $(ARCHFLAGS) $(OPTFLAGS) -std=gnu11 $(WARNINGS)
 CXXFLAGS	 = $(ARCHFLAGS) $(OPTFLAGS) -std=gnu++11 $(WARNINGS)
