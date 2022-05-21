@@ -32,7 +32,7 @@
 #include "prototypes.h"
 
 #define Bytesized 0xFF
-//#define RAWIO XXX TODO implement this
+#define RAWIO
 
 ssize_t _ttyin(                                 /****************************/
         FD      *fp,                            /* -> filedes               */

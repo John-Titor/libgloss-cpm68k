@@ -5,6 +5,7 @@
 
 #include "portab.h"
 #include "osif.h"
+#include "sgtty.h"
 
 extern int main(int argc, const char **argv, const char *envp);
 
@@ -64,8 +65,15 @@ extern ssize_t _rdbin(REG FD *fp, BYTE *buff, size_t bytes);
 // sbrk.c
 extern void *brk(void *_newbrk);
 
+// sgtty.c
+extern WORD stty(WORD fd, struct sgttyb *argp);
+extern WORD gtty(WORD fd, struct sgttyb *argp);
+
 // ttyin.c
 extern ssize_t _ttyin(FD *fp, BYTE *buff, size_t bytes);
+
+// ttyinraw.c
+extern WORD ttyinraw(WORD chktype);
 
 // ttyout.c
 extern ssize_t _ttyout(BYTE *buf);

@@ -1,5 +1,6 @@
-In no particular order
+Newlib bindings for CPM-68k:
 
-* sort out stty/gtty 
-* RAWIO
-* tests
+ ✔ sort out stty/gtty @done (22-05-21 13:21)
+ ☐ open/close/read/seek/scandir
+ ✔ RAWIO @done (22-05-21 13:07)
+ ☐ tests

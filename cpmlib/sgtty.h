@@ -5,8 +5,8 @@
 struct sgttyb{
         char    sg_ispeed;      /* ignored */
         char    sg_ospeed;      /* ignored */
-        char    sg_erase;       /* ignored */
-        char    sg_kill;        /* ignored */
+        char    sg_erase;
+        char    sg_kill;
         int     sg_flags;       
 
 };
