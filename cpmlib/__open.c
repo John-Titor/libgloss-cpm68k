@@ -38,9 +38,9 @@
 
 WORD    __open(                                 /****************************/
                                                 /*                          */
-        WORD    ch,                             /* Channel number           */
-        BYTE    *filnam,                        /* -> filename              */
-        WORD    bdosfunc)                       /* BDOS Function            */
+        WORD            ch,                     /* Channel number           */
+        const BYTE      *filnam,                /* -> filename              */
+        WORD            bdosfunc)               /* BDOS Function            */
 {                                               /****************************/
         FD      *fp;                            /* -> ccb area              */
         struct fcbtab   *fcbp;                  /* -> FCB area in ccb       */

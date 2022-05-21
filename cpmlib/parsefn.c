@@ -33,13 +33,13 @@
 #include "osif.h"
 #include "prototypes.h"
 
-static void _strcpy(BYTE *s, BYTE *d, WORD c);
-static BYTE *get_token(BYTE *src, BYTE *dest, WORD len);
-static WORD stuff_drive(struct fcbtab *fcbp, BYTE *src);
+static void _strcpy(const BYTE *s, BYTE *d, WORD c);
+static const BYTE *get_token(const BYTE *src, BYTE *dest, WORD len);
+static WORD stuff_drive(struct fcbtab *fcbp, const BYTE *src);
 
-    BYTE *                                      /****************************/
+    const BYTE *                                /****************************/
 _parsefn(                                       /*                          */
-    BYTE            *filnam,                    /* -> filename              */
+    const BYTE          *filnam,                /* -> filename              */
     struct fcbtab       *fcbp)                  /* -> FCB address           */
 {                                               /****************************/
 
@@ -89,9 +89,9 @@ _parsefn(                                       /*                          */
 
 
 static void _strcpy(                            /* Special string copy func */
-        BYTE    *s,                             /* Source string            */
-        BYTE    *d,                             /* Destination area         */
-        WORD     c)                             /* Count                    */
+        const BYTE      *s,                     /* Source string            */
+        BYTE            *d,                     /* Destination area         */
+        WORD            c)                      /* Count                    */
 {                                               /****************************/
         while ((*s) && (c))                     /*                          */
         {                                       /*                          */
@@ -120,10 +120,10 @@ static void _strcpy(                            /* Special string copy func */
 /*                                                                          */
 /****************************************************************************/
 static BYTE *_delim="<>.,=:|[]*\n\r";           /* Delimiter set            */
-static BYTE *get_token(                         /*                          */
-        BYTE    *src,                           /* -> source                */
-        BYTE    *dest,                          /* -> destination           */
-        WORD     len)                           /* output area size         */
+static const BYTE *get_token(                   /*                          */
+        const BYTE      *src,                   /* -> source                */
+        BYTE            *dest,                  /* -> destination           */
+        WORD            len)                    /* output area size         */
 {                                               /****************************/
         while(*src && (!strchr(_delim,*src)) && len)/* Until done           */
         {                                       /*                          */
@@ -153,7 +153,7 @@ static BYTE *get_token(                         /*                          */
 /****************************************************************************/
 static  WORD    stuff_drive(                    /*                          */
         struct fcbtab *fcbp,                    /* -> FCB area              */
-        BYTE    *src)                           /* -> Source string         */
+        const BYTE    *src)                     /* -> Source string         */
 {                                               /****************************/
         WORD    i;                              /* Accumulator              */
         i = 0;                                  /* Zap to zero              */

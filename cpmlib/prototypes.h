@@ -26,9 +26,9 @@ extern WORD _chkuser(WORD newu);
 extern void _uchkuser(WORD newu, WORD prevu);
 
 // creat.c
-extern WORD _creat(BYTE *fname, WORD type);
-extern WORD creata(BYTE *fname);
-extern WORD creatb(BYTE *fname);
+extern WORD _creat(const BYTE *fname, WORD type);
+extern WORD creata(const BYTE *fname);
+extern WORD creatb(const BYTE *fname);
 
 // filesz.c
 extern off_t _filesz(int fd);
@@ -45,16 +45,16 @@ extern const BYTE * const __lname;
 extern int _main(uintptr_t basepage);
 
 // __open.c
-extern WORD __open(WORD ch, BYTE *filnam, WORD bdosfunc);
+extern WORD __open(WORD ch, const BYTE *filnam, WORD bdosfunc);
 
 // open.c
-extern WORD _open (BYTE *fname, WORD mode, WORD xtype);
-extern WORD opena(BYTE *fname, WORD mode);
-extern WORD openb(BYTE *fname, WORD mode);
+extern WORD _open (const BYTE *fname, WORD mode, WORD xtype);
+extern WORD opena(const BYTE *fname, WORD mode);
+extern WORD openb(const BYTE *fname, WORD mode);
 
 
 // parsefn.c
-extern BYTE *_parsefn(BYTE *filnam, struct fcbtab *fcbp);
+extern const BYTE *_parsefn(const BYTE *filnam, struct fcbtab *fcbp);
 
 // rdasc.c
 extern ssize_t _rdasc(FD *fp, BYTE *buff, size_t bytes);

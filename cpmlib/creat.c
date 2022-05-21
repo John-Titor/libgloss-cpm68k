@@ -27,8 +27,8 @@
 #include        "prototypes.h"
 
 WORD    _creat (                                /****************************/
-        BYTE    *fname,                         /* -> File name             */
-        WORD    type)                           /* ASCII/BINARY flag        */
+        const BYTE      *fname,                 /* -> File name             */
+        WORD            type)                   /* ASCII/BINARY flag        */
 {                                               /****************************/
         WORD ich;                               /* Channel number for open  */
         FD         *ch;                         /* -> CCB for channel       */
@@ -62,15 +62,15 @@ WORD    _creat (                                /****************************/
 
 #if 0
 WORD    creat(fname)                            /* CLEAR FUNCTION ***********/
-    BYTE *fname
+    const BYTE *fname
 {       return(_creat(fname,0));   }            /* default to ascii         */
 #endif
 
 WORD    creata(                                 /* CLEAR FUNCTION ***********/
-    BYTE *fname)
+    const BYTE *fname)
 {       return(_creat(fname,0));   }            /* ascii file open          */
 
 WORD    creatb(                                 /* CLEAR FUNCTION ***********/
-    BYTE *fname)
+    const BYTE *fname)
 {       return(_creat(fname,1));   }            /* binary file open         */
 

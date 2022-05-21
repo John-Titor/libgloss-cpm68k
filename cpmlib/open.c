@@ -36,9 +36,9 @@
 #define O_BINARY  0x10000                       /* also in newlib CFLAGS    */
 
 WORD    _open (                                 /****************************/
-        BYTE    *fname,                         /* -> File name             */
-        WORD    mode,                           /* Open mode                */
-        WORD    xtype)                          /* File type                */
+        const BYTE      *fname,                 /* -> File name             */
+        WORD            mode,                   /* Open mode                */
+        WORD            xtype)                  /* File type                */
 {                                               /****************************/
         WORD       ich;                         /* Channel number for open  */
         FD         *ch;                         /* -> CCB for channel       */
@@ -114,15 +114,15 @@ int     open(
 
 #if 0
 WORD    open(fname,mode)                        /* CLEAR FUNCTION ***********/
-        BYTE *fname; WORD mode;
+        const BYTE *fname; WORD mode;
 {       return(_open(fname,mode,0));    }       /* default to ascii         */
 #endif
 
 WORD    opena(                                  /* CLEAR FUNCTION ***********/
-        BYTE *fname, WORD mode)
+        const BYTE *fname, WORD mode)
 {       return(_open(fname,mode,0));    }       /* open ascii file          */
 
 WORD    openb(                                  /* CLEAR FUNCTION ***********/
-        BYTE *fname, WORD mode)
+        const BYTE *fname, WORD mode)
 {       return(_open(fname,mode,1));    }       /* open binary file         */
 
