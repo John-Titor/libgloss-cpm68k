@@ -3,7 +3,9 @@
 # CP/M 68K executable format tools
 #
 
-import struct, sys, os
+import struct
+import sys
+import os
 from hexdump import hexdump
 
 # object file types
@@ -101,7 +103,7 @@ class CPMFile(object):
 
         # check filesize
         if relocEnd > len(fileBytes):
-            raise RuntimeError('header / file size mismatch')
+            raise RuntimeError(f'header / file size mismatch; expect {relocEnd} but have {len(fileBytes)}')
 
         # build out our internal representation of the file
         text = fileBytes[textStart:textEnd]
@@ -126,7 +128,7 @@ class CPMFile(object):
                    relocs=relocs)
 
     @classmethod
-    def decodeRelocs(cls, bytes):
+    def decodeRelocs(cls, relocBytes):
         """
         Decode in-file relocations and produce a collection of only the interesting ones
 
@@ -134,9 +136,9 @@ class CPMFile(object):
         can be directly inferred from offset
         """
 
-        fields = int(len(bytes) / 2)
+        fields = int(len(relocBytes) / 2)
         fmt = f'>{fields}H'
-        relocEntries = struct.unpack(fmt, bytes)
+        relocEntries = struct.unpack(fmt, relocBytes)
 
         relocs = dict()
         size32 = False

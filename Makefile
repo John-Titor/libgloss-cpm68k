@@ -1,6 +1,9 @@
 
 TOOL_PREFIX	 = m68k-elf-
-ELF2CPM		 = tools/elf2cpm.py
+ELF2CPM		 = build/elf2cpm68k
+MAKE_DISK	 = ../Tiny68k/make_disk.sh
+SIM		 = ../Emulators/py68k/py68k.py
+SIM_ROM		 = ../Tiny68k/ROM/T68kbug_r07.BIN
 
 # Compiler / linker
 CC		 = $(TOOL_PREFIX)cc
@@ -55,17 +58,24 @@ OBJS		 = $(SOBJS) $(COBJS) $(CXXOBJS)
 CPMLIB		 = build/cpmlib.o
 
 ELF		 = build/$(PROG).elf
-REL		 = build/$(PROG).rel
+REL		 = build/$(PROG).68k
+DMG		 = build/$(PROG).dmg
 
 all: $(CPMLIB)
 
 clean:
 	rm -rf build
 
+run: $(DMG)
+	$(SIM) --target tiny68k --diskfile $(DMG) --eeprom $(SIM_ROM)
+
 $(CPMLIB): $(OBJS)
 	$(LD) $(LDFLAGS) -r -o $@ $(OBJS)
 
-$(REL): $(ELF)
+$(DMG): $(REL)
+	$(MAKE_DISK) $@ $(REL)
+
+$(REL): $(ELF) $(ELF2CPM)
 	$(ELF2CPM) $< $@
 
 $(ELF): $(OBJS)
@@ -83,6 +93,9 @@ $(COBJS):build/%.o:%.c
 $(CXXOBJS):build/%.o:%.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CFLAGS) -c -o $@ $<
+
+$(ELF2CPM): tools/elf2cpm68k.c
+	cc -Wall $< -o $@
 
 -include $(OBJS:.o=.d)
 

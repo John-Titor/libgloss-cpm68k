@@ -3,4 +3,4 @@ SRCS	= main.c
 
 include Makefile
 
-all: $(REL)
+all: $(DMG)

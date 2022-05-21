@@ -1,31 +1,28 @@
 /*
  * Convert a relocatable elf32-m68k program to relocatable CP/M-68k format.
  * 
- * Compile with gcc/clang: cc -Wall -pedantic -std=c89 elf2cpm68k.c
+ * Compile with gcc/clang: cc -Wall elf2cpm68k.c
  */
 
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <errno.h>
 #include <string.h>
 
-#define MAX_RELOCS      5000    /* increase as necessary */
+#define MAX_RELOCS      5000        /* increase as necessary */
+#define COPY_BUF        1024        /* increase if stack is not an issue */
 
-#define COPY_BUF        1024    /* increase if stack is not an issue */
+typedef uint8_t field8;
+typedef struct { uint8_t bytes[2]; } field16;
+typedef struct { uint8_t bytes[4]; } field32;
 
-typedef unsigned char   u8;
-typedef unsigned long   u32;    /* OK if larger */
-
-typedef u8 field8;
-typedef struct { u8 bytes[2]; } field16;
-typedef struct { u8 bytes[4]; } field32;
-
-#define READ16(_f)  (((u32)((_f).bytes[0]) << 8) \
+#define READ16(_f)  (((uint32_t)((_f).bytes[0]) << 8) \
                     + (_f).bytes[1])
-#define READ32(_f)  (((u32)((_f).bytes[0]) << 24) \
-                    + ((u32)((_f).bytes[1]) << 16) \
-                    + ((u32)((_f).bytes[2]) << 8) \
+#define READ32(_f)  (((uint32_t)((_f).bytes[0]) << 24) \
+                    + ((uint32_t)((_f).bytes[1]) << 16) \
+                    + ((uint32_t)((_f).bytes[2]) << 8) \
                     + (_f).bytes[3])
 
 #define WRITE16(_f, _v) { (_f).bytes[0] = ((_v) >> 8) & 0xff; \
@@ -37,7 +34,7 @@ typedef struct { u8 bytes[4]; } field32;
                           (_f).bytes[3] = (_v) & 0xff; }
 
 typedef struct {
-    u8          e_ident[0x10];
+    uint8_t     e_ident[0x10];
 #define EI_MAG0     0
 #define EI_MAG1     1
 #define EI_MAG2     2
@@ -150,8 +147,8 @@ typedef struct {
     field32     st_name;
     field32     st_value;
     field32     st_size;
-    u8          st_info;
-    u8          st_other;
+    uint8_t          st_info;
+    uint8_t          st_other;
     field16     st_shndx;
 } elf32_sym_t;
 
@@ -173,17 +170,17 @@ typedef struct {
     elf32_section_header_t  *symtab;
 
     /* relevant things derived from file contents */
-    u32         text_offset;
-    u32         text_filesize;
+    uint32_t    text_offset;
+    uint32_t    text_filesize;
 
-    u32         data_offset;
-    u32         data_vmaddr;
-    u32         data_filesize;
+    uint32_t    data_offset;
+    uint32_t    data_vmaddr;
+    uint32_t    data_filesize;
 
-    u32         bss_memsize;
+    uint32_t    bss_memsize;
 
-    u32         rel_count;
-    u32         rel_data[MAX_RELOCS];
+    uint32_t    rel_count;
+    uint32_t    rel_data[MAX_RELOCS];
 #define REL_TYPE_SHIFT  28
 #define REL_TYPE_DATA   (1LU << REL_TYPE_SHIFT)
 #define REL_TYPE_TEXT   (2LU << REL_TYPE_SHIFT)
@@ -230,25 +227,11 @@ read_at(const char *what, FILE *fp, void *buffer, long where, size_t count)
 
     if (actual != count) {
         error("reading %s: %s", what, strerror(errno));
-/*    } else {
-        size_t index;
-        u8 *bp = (u8 *)buffer;
-        fprintf(stderr, "%s @%lx:\n", what, where);
-        for (index = 0; index < actual; index += 8) {
-            size_t col;
-            fprintf(stderr, "%02x: ", (unsigned)index);
-            for (col = 0; col < 8; col++) {
-                if ((index + col) < actual) {
-                    fprintf(stderr, "0x%02x ", (unsigned)*(bp + index + col));
-                }
-            }
-            fprintf(stderr, "\n");
-        }*/
     }
 }
 
 elf32_section_header_t *
-elf_section_header(elf_file_t *ef, u32 index) {
+elf_section_header(elf_file_t *ef, uint32_t index) {
     if (index >= e_shnum(ef->header)) {
         error("reference to invalid section %ld", index);
     }
@@ -256,7 +239,7 @@ elf_section_header(elf_file_t *ef, u32 index) {
 }
 
 void *
-elf_section_data(elf_file_t *ef, u32 index)
+elf_section_data(elf_file_t *ef, uint32_t index)
 {
     elf32_section_header_t  *sp = ef->sections + index;
     void                    **bufp = ef->section_data + index;
@@ -271,14 +254,14 @@ elf_section_data(elf_file_t *ef, u32 index)
 void
 load_elf_relocs(elf_file_t *ef)
 {
-    u32 section_index;
-    u32 rel_index;
+    uint32_t section_index;
+    uint32_t rel_index;
 
     /* scan sections looking for relocation things */
     for (section_index = 0; section_index < e_shnum(ef->header); section_index++) {
         elf32_section_header_t *sh = elf_section_header(ef, section_index);
         elf32_rela_t *rels;
-        u32 num_rels;
+        uint32_t num_rels;
         size_t rel_size;
         elf32_sym_t *symtab;
 
@@ -310,11 +293,11 @@ load_elf_relocs(elf_file_t *ef)
         num_rels = sh_size(*sh) / rel_size;
         for (rel_index = 0; rel_index < num_rels; rel_index++) {
             elf32_rela_t *rel = rels + rel_index;
-            u32 rel_offset = rel_offset(*rel);
-            u32 rel_type = REL_TYPE(rel_info(*rel));
+            uint32_t rel_offset = rel_offset(*rel);
+            uint32_t rel_type = REL_TYPE(rel_info(*rel));
             elf32_sym_t *rel_sym = symtab + REL_SYM(rel_info(*rel));
-            u32 rel_target = st_value(*rel_sym);
-            u32 rel_target_type = 0;
+            uint32_t rel_target = st_value(*rel_sym);
+            uint32_t rel_target_type = 0;
 
             /* check whether this relocation is interesting */
             switch (rel_type) {
@@ -351,8 +334,8 @@ load_elf_relocs(elf_file_t *ef)
         }
     }
     for (rel_index = 1; rel_index < ef->rel_count; rel_index++) {
-        u32 prev_rel = ef->rel_data[rel_index - 1] & ~REL_TYPE_MASK;
-        u32 this_rel = ef->rel_data[rel_index] & ~REL_TYPE_MASK;
+        uint32_t prev_rel = ef->rel_data[rel_index - 1] & ~REL_TYPE_MASK;
+        uint32_t this_rel = ef->rel_data[rel_index] & ~REL_TYPE_MASK;
         if (this_rel < prev_rel) {
             error("relocations not sorted");
         }
@@ -424,14 +407,14 @@ load_elf(elf_file_t *ef)
 
     load_elf_relocs(ef);
 
-    printf("Loaded ELF file: text 0x%lx data 0x%lx bss 0x%lx, %ld relocations\n",
+    printf("Loaded ELF file: text 0x%x data 0x%x bss 0x%x, %u relocations\n",
            ef->text_filesize, ef->data_filesize, ef->bss_memsize, ef->rel_count);
 }
 
 typedef struct {
     field16     fh_type;
 #define FH_CONTIG       0x601a
-#define FH_NONCONTIG    0x601b
+//#define FH_NONCONTIG    0x601b
     field32     fh_textlen;
     field32     fh_datalen;
     field32     fh_bsslen;
@@ -441,8 +424,8 @@ typedef struct {
     field16     fh_flags;
 #define FH_NO_RELOC     0xffff
 #define FH_WITH_RELOC   0x0000
-    field32     fh_data_addr;
-    field32     fh_bss_addr;
+//    field32     fh_data_addr;
+//    field32     fh_bss_addr;
 } cpm_exec_header_t;
 
 void
@@ -456,7 +439,7 @@ write_out(const char *what, FILE *fp, void *buffer, size_t count)
 void
 copy_bytes(const char *what, FILE *source, long source_offset, FILE *destination, size_t count) 
 {
-    u8      copy_buffer[COPY_BUF];
+    uint8_t      copy_buffer[COPY_BUF];
 
     while (count > 0) {
         size_t resid = (count < COPY_BUF) ? count : COPY_BUF;
@@ -471,7 +454,7 @@ copy_bytes(const char *what, FILE *source, long source_offset, FILE *destination
 void
 zerofill(const char *what, FILE *destination, size_t count)
 {
-    u8  zero = 0;
+    uint8_t  zero = 0;
 
     while (count--) {
         if (fwrite(&zero, 1, 1, destination) < 0) {
@@ -483,29 +466,22 @@ zerofill(const char *what, FILE *destination, size_t count)
 void
 write_cpm_relocs(elf_file_t *ef, FILE *cfp)
 {
-    u32         current_vma = 0;
-    u32         rel_index = 0;
+    uint32_t    current_vma = 0;
+    uint32_t    rel_index = 0;
     field16     relword;
 
-    long file_base = ftell(cfp);
-
     while (rel_index < ef->rel_count) {
-        u32 next_rel_addr = ef->rel_data[rel_index] & ~REL_TYPE_MASK;
-        u32 next_rel_type = (ef->rel_data[rel_index] & REL_TYPE_MASK) >> REL_TYPE_SHIFT;
-
-fprintf(stderr, "@%lx next rel %lx\n", current_vma, next_rel_addr);
+        uint32_t next_rel_addr = ef->rel_data[rel_index] & ~REL_TYPE_MASK;
+        uint32_t next_rel_type = (ef->rel_data[rel_index] & REL_TYPE_MASK) >> REL_TYPE_SHIFT;
 
         /* pad the end of the text segment if necessary */
         if ((current_vma < ef->data_vmaddr)
             && (next_rel_addr >= ef->data_vmaddr)) {
-fprintf(stderr, "pad text / advance to data\n");
             zerofill("relocation padding", cfp, ef->text_filesize - current_vma);
             current_vma = ef->data_vmaddr;
         }
-fprintf(stderr, "  pad %lx\n", next_rel_addr - current_vma);
         zerofill("relocation padding", cfp, next_rel_addr - current_vma);
         current_vma = next_rel_addr;
-fprintf(stderr, "  insert rel 0x%08lx\n", ftell(cfp) - file_base);
         WRITE16(relword, 5);
         write_out("relocation", cfp, &relword, sizeof(relword));
         WRITE16(relword, next_rel_type);
@@ -523,23 +499,35 @@ write_cpm(elf_file_t *ef, FILE *cfp)
 {
     cpm_exec_header_t   ch;
 
-    WRITE16(ch.fh_type, FH_NONCONTIG);
-    WRITE32(ch.fh_textlen, ef->text_filesize);
-    WRITE32(ch.fh_datalen, ef->data_filesize);
-    WRITE32(ch.fh_bsslen, ef->bss_memsize);
+    /* segments must always be 16b-size-aligned */
+    uint32_t text_pad = ef->text_filesize % 2;
+    uint32_t data_pad = ef->data_filesize % 2;
+    uint32_t bss_pad = ef->bss_memsize % 2;
+
+    WRITE16(ch.fh_type, FH_CONTIG);
+//    WRITE16(ch.fh_type, FH_NONCONTIG);
+    WRITE32(ch.fh_textlen, ef->text_filesize + text_pad);
+    WRITE32(ch.fh_datalen, ef->data_filesize + data_pad);
+    WRITE32(ch.fh_bsslen, ef->bss_memsize + bss_pad);
     WRITE32(ch.fh_symlen, 0);
     WRITE32(ch.fh_pad, 0);
     WRITE32(ch.fh_entry, 0);    /* XXX ??? */
     WRITE16(ch.fh_flags, ef->rel_count ? FH_WITH_RELOC : FH_NO_RELOC);
-    WRITE32(ch.fh_data_addr, ef->data_vmaddr);
-    WRITE32(ch.fh_bss_addr, ef->data_vmaddr + ef->data_filesize);
+//    WRITE32(ch.fh_data_addr, ef->data_vmaddr);
+//    WRITE32(ch.fh_bss_addr, ef->data_vmaddr + ef->data_filesize);
 
-    write_out("CP/M-86 exec header", cfp, &ch, sizeof(ch));
-fprintf(stderr, "wrote header text/data\n");
+    write_out("CP/M-68k exec header", cfp, &ch, sizeof(ch));
 
     copy_bytes("text segment", ef->fp, ef->text_offset, cfp, ef->text_filesize);
+    if (text_pad > 0) {
+        zerofill("text padding", cfp, text_pad);
+        ef->text_filesize += text_pad;
+    }
     copy_bytes("data segment", ef->fp, ef->data_offset, cfp, ef->data_filesize);
-fprintf(stderr, "copied text/data\n");
+    if (data_pad > 0) {
+        zerofill("data padding", cfp, data_pad);
+        ef->data_filesize += data_pad;
+    }
     write_cpm_relocs(ef, cfp);
 }
 
