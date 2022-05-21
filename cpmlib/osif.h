@@ -118,32 +118,32 @@ extern UWORD __BDOS(UWORD fn, ULONG arg);
 
                                                 /****************************/
 #define __OSIF(fn,arg) __BDOS((fn),(ULONG)(arg)) /* CPM68K does it this way  */
-#define EXIT     0                              /* Exit to BDOS             */
-#define CONIN    1                              /* direct echoing con input */
-#define CONOUT   2                              /* Direct console output    */
-#define LSTOUT   5                              /* Direct list device output*/
-#define CONIO    6                              /* Direct console I/O       */
+#define EXIT            0                       /* Exit to BDOS             */
+#define CONIN           1                       /* direct echoing con input */
+#define CONOUT          2                       /* Direct console output    */
+#define LSTOUT          5                       /* Direct list device output*/
+#define CONIO           6                       /* Direct console I/O       */
 #define C_WRITESTR      9                       /* Console string output    */
-#define CONBUF  10                              /* Read console buffer      */
+#define CONBUF          10                      /* Read console buffer      */
 #define C_STAT          11                      /* Get console status       */
 #define S_BDOSVER       12                      /* Get System BDOS Ver Num  */
-#define OPEN    15                              /* OPEN a disk file         */
-#define CLOSE   16                              /* Close a disk file        */
-#define SEARCHF 17                              /* Search for first         */
-#define SEARCHN 18                              /* Search for next          */
-#define DELETE  19                              /* Delete a disk file       */
-#define CREATE  22                              /* Create a disk file       */
+#define OPEN            15                      /* OPEN a disk file         */
+#define CLOSE           16                      /* Close a disk file        */
+#define SEARCHF         17                      /* Search for first         */
+#define SEARCHN         18                      /* Search for next          */
+#define DELETE          19                      /* Delete a disk file       */
+#define CREATE          22                      /* Create a disk file       */
 #define F_RENAME        23                      /* Rename a disk file       */
-#define SETDMA  26                              /* Set DMA address          */
-#define USER    32                              /*sw Get / set user number  */
-#define B_READ  33                              /* Read Random record       */
-#define B_WRITE 34                              /* Write Random record      */
-#define FILSIZ  35                              /* Compute File Size        */
+#define SETDMA          26                      /* Set DMA address          */
+#define USER            32                      /*sw Get / set user number  */
+#define B_READ          33                      /* Read Random record       */
+#define B_WRITE         34                      /* Write Random record      */
+#define FILSIZ          35                      /* Compute File Size        */
 #define F_MULTISEC      44                      /* Set Multi-Sector Count   */
 #define P_CHAIN         47                      /* Program Chain            */
-#define SETVEC  61                              /* Set exception vector     */
+#define SETVEC          61                      /* Set exception vector     */
 #define N_NETSTAT       68                      /* Get Network Status       */
-#define F_TRUNC 99                              /* Truncate file function   */
+#define F_TRUNC         99                      /* Truncate file function   */
 #define S_OSVER         163                     /* Get OS Version Number    */
 /****************************************************************************/
 /* Other CP/M definitions                                                   */

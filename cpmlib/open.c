@@ -96,7 +96,7 @@ int     open(
                 {                               /*                          */
                         if (rdonly)             /* creating a readonly file */
                                 RETERR(FAILURE,EINVAL); /* makes no sense   */
-                        ret = creat((BYTE *)fname, xtype); /* try create    */
+                        ret = _creat((BYTE *)fname, 0, xtype); /* try create*/
                 }                               /*                          */
                 else if (oflags & O_EXCL)       /* file should not exist?   */
                 {                               /*                          */
