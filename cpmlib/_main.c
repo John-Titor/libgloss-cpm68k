@@ -27,13 +27,14 @@ void _fini(void) {}
 int
 _main(uintptr_t basepage)
 {
+    // call initializer functions
+    __libc_init_array();
+
+    // do stdio init
     _chinit();                              /* Initialize channels      */
     _open(__tname,READ,0);                  /* Open STDIN               */
     _open(__tname,WRITE,0);                 /* Open STDOUT              */
     _open(__tname,WRITE,0);                 /* Open STDERR              */
-
-    // call initializer functions
-    __libc_init_array();
 
     // parse command tail
     int argc = 0;

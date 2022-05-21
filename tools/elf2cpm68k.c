@@ -147,8 +147,8 @@ typedef struct {
     field32     st_name;
     field32     st_value;
     field32     st_size;
-    uint8_t          st_info;
-    uint8_t          st_other;
+    uint8_t     st_info;
+    uint8_t     st_other;
     field16     st_shndx;
 } elf32_sym_t;
 
@@ -156,6 +156,8 @@ typedef struct {
 #define st_value(_h)    READ32((_h).st_value)
 #define st_size(_h)     READ32((_h).st_size)
 #define st_shndx(_h)    READ16((_h).st_shndx)
+#define st_bind(_h)     ((_h).st_info >> 4)
+#define STB_WEAK        2
 
 typedef struct {
     FILE        *fp;
@@ -299,6 +301,11 @@ load_elf_relocs(elf_file_t *ef)
             uint32_t rel_target = st_value(*rel_sym);
             uint32_t rel_target_type = 0;
 
+            /* ignore undef weak references, they should not be fixed up */
+            if ((rel_target == 0) && (st_bind(*rel_sym) == STB_WEAK)) {
+                continue;
+            }
+
             /* check whether this relocation is interesting */
             switch (rel_type) {
             case R_68K_32:
@@ -414,7 +421,7 @@ load_elf(elf_file_t *ef)
 typedef struct {
     field16     fh_type;
 #define FH_CONTIG       0x601a
-//#define FH_NONCONTIG    0x601b
+//#define FH_NONCONTIG    0x601b    // non-contig not supported
     field32     fh_textlen;
     field32     fh_datalen;
     field32     fh_bsslen;
@@ -424,9 +431,9 @@ typedef struct {
     field16     fh_flags;
 #define FH_NO_RELOC     0xffff
 #define FH_WITH_RELOC   0x0000
-//    field32     fh_data_addr;
-//    field32     fh_bss_addr;
 } cpm_exec_header_t;
+
+_Static_assert(sizeof(cpm_exec_header_t) == 28, "CPM exec header size error");
 
 void
 write_out(const char *what, FILE *fp, void *buffer, size_t count)
@@ -474,12 +481,6 @@ write_cpm_relocs(elf_file_t *ef, FILE *cfp)
         uint32_t next_rel_addr = ef->rel_data[rel_index] & ~REL_TYPE_MASK;
         uint32_t next_rel_type = (ef->rel_data[rel_index] & REL_TYPE_MASK) >> REL_TYPE_SHIFT;
 
-        /* pad the end of the text segment if necessary */
-        if ((current_vma < ef->data_vmaddr)
-            && (next_rel_addr >= ef->data_vmaddr)) {
-            zerofill("relocation padding", cfp, ef->text_filesize - current_vma);
-            current_vma = ef->data_vmaddr;
-        }
         zerofill("relocation padding", cfp, next_rel_addr - current_vma);
         current_vma = next_rel_addr;
         WRITE16(relword, 5);
@@ -499,35 +500,25 @@ write_cpm(elf_file_t *ef, FILE *cfp)
 {
     cpm_exec_header_t   ch;
 
-    /* segments must always be 16b-size-aligned */
-    uint32_t text_pad = ef->text_filesize % 2;
-    uint32_t data_pad = ef->data_filesize % 2;
-    uint32_t bss_pad = ef->bss_memsize % 2;
+    // text must be contiguous with data
+    uint32_t text_pad = ef->data_vmaddr - ef->text_filesize;
 
     WRITE16(ch.fh_type, FH_CONTIG);
-//    WRITE16(ch.fh_type, FH_NONCONTIG);
     WRITE32(ch.fh_textlen, ef->text_filesize + text_pad);
-    WRITE32(ch.fh_datalen, ef->data_filesize + data_pad);
-    WRITE32(ch.fh_bsslen, ef->bss_memsize + bss_pad);
+    WRITE32(ch.fh_datalen, ef->data_filesize);
+    WRITE32(ch.fh_bsslen, ef->bss_memsize);
     WRITE32(ch.fh_symlen, 0);
     WRITE32(ch.fh_pad, 0);
     WRITE32(ch.fh_entry, 0);    /* XXX ??? */
     WRITE16(ch.fh_flags, ef->rel_count ? FH_WITH_RELOC : FH_NO_RELOC);
-//    WRITE32(ch.fh_data_addr, ef->data_vmaddr);
-//    WRITE32(ch.fh_bss_addr, ef->data_vmaddr + ef->data_filesize);
 
     write_out("CP/M-68k exec header", cfp, &ch, sizeof(ch));
 
     copy_bytes("text segment", ef->fp, ef->text_offset, cfp, ef->text_filesize);
     if (text_pad > 0) {
         zerofill("text padding", cfp, text_pad);
-        ef->text_filesize += text_pad;
     }
     copy_bytes("data segment", ef->fp, ef->data_offset, cfp, ef->data_filesize);
-    if (data_pad > 0) {
-        zerofill("data padding", cfp, data_pad);
-        ef->data_filesize += data_pad;
-    }
     write_cpm_relocs(ef, cfp);
 }
 
