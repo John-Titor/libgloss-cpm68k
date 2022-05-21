@@ -22,7 +22,7 @@
 ssize_t _lstout(                                /***************************/
         BYTE *buffer)                           /* -> 1st char output      */
 {                                               /***************************/
-REG     WORD    count;                          /* =  # bytes to xfer      */
+        WORD    count;                          /* =  # bytes to xfer      */
         WORD    xcount;                         /* save area for count     */
                                                 /*                         */
         xcount = count = (0xFF & *buffer++);    /* Copy for later          */

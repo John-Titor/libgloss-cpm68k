@@ -28,9 +28,9 @@ int     rename(                                 /* CLEAR FUNCTION ***********/
         const char *to)                         /* New file name            */
 {
         BYTE fcbbuf[(sizeof(struct fcbtab))+16];/* Extra large fcb          */
-  REG   struct fcbtab *fcbp;                    /* FCB pointer              */
-  REG   WORD nuser;                             /* new user #               */
-  REG   WORD xuser;                             /* system user #            */
+        struct fcbtab *fcbp;                    /* FCB pointer              */
+        WORD nuser;                             /* new user #               */
+        WORD xuser;                             /* system user #            */
         WORD rv;                                /* Return value             */
 
         fcbp = (struct fcbtab*)fcbbuf;          /* Point fcb to start       */

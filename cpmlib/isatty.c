@@ -15,14 +15,17 @@
 
 #include "portab.h"
 #include "osif.h"
+#include "osiferr.h"
 #include "prototypes.h"
 
 int isatty(                                     /* CLEAR FUNCTION ***********/
         int fd)                                 /* file des returned by open*/
 {                                               /****************************/
-        REG FD *fp;                             /* ptr to ccb               */
+        FD *fp;                                 /* ptr to ccb               */
                                                 /*                          */
         if((fp=_chkc(fd)) == NULLFD)            /* make sure its open  MGL  */
-                return(0);                      /*   isno TTY ifnot open    */ // XXX should EBADF
-        return( (fp->flags & ISTTY) != 0 );     /* test this flag           */
+                RETERR(0, EBADF);               /*   isno TTY ifnot open    */
+        if( (fp->flags & ISTTY) == 0 )          /* test this flag           */
+                RETERR(0, ENOTTY);              /*   not a TTY              */
+        return 1;                               /* must be a TTY            */
 }                                               /****************************/

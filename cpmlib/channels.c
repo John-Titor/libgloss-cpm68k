@@ -20,18 +20,7 @@
 #include        "osiferr.h"                     /* To set error vars        */
 #include        "prototypes.h"
 
-#ifdef MAXF5                                    /*--------------------------*/
-#  define       MAXCCBS 5                       /* Maximum Num CCBs         */
-maxfiles5() { ; }                               /* stubroutine for option.h */
-#else                                           /*--------------------------*/
-
-#ifdef MAXF10                                   /*--------------------------*/
-#  define       MAXCCBS 10                      /* Maximum Num CCBs         */
-#else                                           /*--------------------------*/
-#  define       MAXCCBS 16                      /* Maximum Num CCBs         */
-#endif                                          /*--------------------------*/
-
-#endif                                          /*--------------------------*/
+#define         MAXCCBS 16                      /* Maximum Num CCBs         */
 
 LONG            _chvec  ={0};                   /* Allocate storage         */
 FD              _fds[MAXCCBS];                  /* Allocate CCB storage     */
@@ -57,8 +46,8 @@ FD              _fds[MAXCCBS];                  /* Allocate CCB storage     */
 
 WORD    _allocc(void)                           /****************************/
 {                                               /*                          */
-        REG WORD i;                             /* Define 2 temporaries     */
-        REG LONG j;                             /*                          */
+        WORD i;                                 /* Define 2 temporaries     */
+        LONG j;                                 /*                          */
                                                 /*                          */
         j = 1;                                  /* Start with channel 0     */
         for(i=0;i<MAXCCBS;i++)                  /* Look at the bits         */
@@ -97,7 +86,7 @@ WORD    _freec(                                 /****************************/
 
 void _chinit(void)                              /****************************/
 {                                               /*                          */
-        REG WORD        i;                      /*      Index               */
+        WORD        i;                          /*      Index               */
         for(i=0;i<MAXCCBS;i++)                  /*      For all channels    */
                 __chinit(i);                    /*      Init fds(i);        */
 }                                               /****************************/
@@ -108,7 +97,7 @@ void _chinit(void)                              /****************************/
 
 void __chinit(int i)
 {                                               /****************************/
-        REG FD          *ch;                    /* -> CCB                   */
+        FD          *ch;                        /* -> CCB                   */
 
         ch =  _getccb(i);                       /* convert fd to CCB        */
         ch -> chan   = i;                       /* Load channel byte        */
@@ -138,7 +127,7 @@ void __chinit(int i)
 FD      *_chkc(                                 /****************************/
         int    ch)                              /* Facilitate error check   */
 {                                               /*                          */
-        REG     FD *xcb;                        /* -> CCB                   */
+        FD *xcb;                                /* -> CCB                   */
                                                 /****************************/
         if(ch >= MAXCCBS)                       /* Is channel in range?     */
                 RETERR(NULLFD,EBADF);           /* No, quit now.            */

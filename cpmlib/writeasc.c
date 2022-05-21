@@ -29,16 +29,15 @@
 
 ssize_t _wrtasc(                                /****************************/
                                                 /*                          */
-        REG     FD      *fp,                    /* -> CCB                   */
+        FD      *fp,                            /* -> CCB                   */
         const   BYTE    *buff,                  /* -> User's buffer         */
-        REG     size_t  bytes)                  /* # bytes to write         */
+        size_t  bytes)                          /* # bytes to write         */
 {                                               /****************************/
-        REG     BYTE    *p1;                    /* Temp buffer pointer      */
-        REG     BYTE    cc;                     /* character temp           */
-        LOCAL   LONG    xsector;                /* Sector temp              */
-//        LOCAL   LONG    nsector;                /* Multi-sector count       */
-        LOCAL   LONG    written;                /* # bytes to write         */
-        LOCAL   LONG    xbytes;                 /* Save byte count remaining*/
+        BYTE    *p1;                            /* Temp buffer pointer      */
+        BYTE    cc;                             /* character temp           */
+        LONG    xsector;                        /* Sector temp              */
+        LONG    written;                        /* # bytes to write         */
+        LONG    xbytes;                         /* Save byte count remaining*/
                                                 /****************************/
         written = bytes;                        /* Remember original request*/
         cc = 0;                                 /* Init to garbage value    */

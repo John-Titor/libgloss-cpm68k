@@ -82,7 +82,7 @@ struct  ccb                             /************************************/
 
 extern  struct  ccb     _fds[]; /*  */  /*      Declare storage             */
 #define FD struct ccb                   /*      FD Type definition          */
-#define NULLFD ((FD *)0)                /*      NULLPTR for FD              */
+#define NULLFD ((FD *)NULL)             /*      NULLPTR for FD              */
                                         /************************************/
 /*      Flags word bit definitions                                          */
                                         /************************************/

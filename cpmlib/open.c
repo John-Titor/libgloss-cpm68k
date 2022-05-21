@@ -40,8 +40,8 @@ WORD    _open (                                 /****************************/
         WORD    mode,                           /* Open mode                */
         WORD    xtype)                          /* File type                */
 {                                               /****************************/
-        REG  WORD       ich;                    /* Channel number for open  */
-        REG  FD         *ch;                    /* -> CCB for channel       */
+        WORD       ich;                         /* Channel number for open  */
+        FD         *ch;                         /* -> CCB for channel       */
                                                 /*                          */
         if((ich = _allocc()) == FAILURE)        /* Allocate a channel       */
                 return(FAILURE);                /*      Can't: EMFILE       */
@@ -82,7 +82,7 @@ int     open(
         int oflags,                             /* Posix open flags         */
         ...)                                    /* create mode is ignored   */
 {
-        BOOLEAN rdonly = ((oflags & (O_WRONLY | O_RDWR)) == 0);
+        bool    rdonly = ((oflags & (O_WRONLY | O_RDWR)) == 0);
         WORD    mode = rdonly ? READ : 0;
         WORD    xtype = (oflags & O_BINARY) ? 1 : 0;
         WORD    ret = 0;
@@ -96,7 +96,7 @@ int     open(
                 {                               /*                          */
                         if (rdonly)             /* creating a readonly file */
                                 RETERR(FAILURE,EINVAL); /* makes no sense   */
-                        ret = _creat((BYTE *)fname, 0, xtype); /* try create*/
+                        ret = _creat((BYTE *)fname, xtype); /* try create   */
                 }                               /*                          */
                 else if (oflags & O_EXCL)       /* file should not exist?   */
                 {                               /*                          */

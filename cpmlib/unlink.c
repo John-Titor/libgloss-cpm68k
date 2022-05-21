@@ -27,8 +27,8 @@
 int     unlink(                                 /* CLEAR FUNCTION ***********/
         const char *filename)                   /* -> filename              */
 {                                               /****************************/
-REG     WORD    ch;                             /* Channel number           */
-REG     WORD    ret;                            /* Temp return value        */
+        WORD    ch;                             /* Channel number           */
+        WORD    ret;                            /* Temp return value        */
                                                 /****************************/
         if((ch=_allocc()) < 0)                  /* Allocate a channel       */
                 return(FAILURE);                /* Can't                    */

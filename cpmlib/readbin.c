@@ -23,16 +23,16 @@
 
 ssize_t _rdbin(                                 /****************************/
                                                 /*                          */
-REG     FD      *fp,                            /* -> ccb for the file      */
-REG     BYTE    *buff,                          /* -> buffer to receive data*/
-REG     size_t  bytes)                          /* =  # bytes to xfer       */
+        FD      *fp,                            /* -> ccb for the file      */
+        BYTE    *buff,                          /* -> buffer to receive data*/
+        size_t  bytes)                          /* =  # bytes to xfer       */
 {                                               /****************************/
 
-REG     BYTE    *p;                             /* Temp byte pointer        */
-LOCAL   LONG    xsector;                        /* Temp sector number       */
-LOCAL   LONG    nsector;                        /* Multi-sector count       */
-LOCAL   LONG    xbytes;                         /* byte count temp          */
-REG     LONG    i;                              /* Temp index               */
+        BYTE    *p;                             /* Temp byte pointer        */
+        LONG    xsector;                        /* Temp sector number       */
+        LONG    nsector;                        /* Multi-sector count       */
+        LONG    xbytes;                         /* byte count temp          */
+        LONG    i;                              /* Temp index               */
                                                 /****************************/
         xbytes = bytes;                         /* Preserve org byte cnt    */
         xsector = fp->offset >> 7;              /* Calculate starting sector*/

@@ -21,7 +21,7 @@ ssize_t _ttyout(                                /***************************/
                                                 /*                         */
         BYTE *buf)                              /* -> 1st char output      */
 {                                               /***************************/
-REG     WORD    ii;                             /* counter for '$' check   */
+        WORD    ii;                             /* counter for '$' check   */
         WORD    count;                          /* =  # bytes to xfer      */
         BYTE    *cp;                            /* ptr for '$' check       */
                                                 /*                         */

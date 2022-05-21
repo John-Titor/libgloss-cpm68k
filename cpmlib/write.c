@@ -38,7 +38,7 @@ ssize_t write(                                  /* CLEAR FUNCTION ***********/
         size_t          bytes)                  /* Number of bytes to xfer  */
                                                 /*                          */
 {                                               /****************************/
-        REG     FD      *fp;                    /* File (ccb) pointer       */
+        FD      *fp;                            /* File (ccb) pointer       */
                                                 /****************************/
         if((fp=_chkc(fd)) == NULLFD)            /* Get CCB address MGL      */
                 return(FAILURE);                /*      Can't: EBADF        */

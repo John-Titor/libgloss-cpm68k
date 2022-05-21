@@ -24,15 +24,15 @@
 #include "osiferr.h"
 #include "prototypes.h"
 
-ssize_t _rdasc(                                   /****************************/
+ssize_t _rdasc(                                 /****************************/
                                                 /*                          */
-REG     FD      *fp,                            /* -> ccb for the file      */
-REG     BYTE    *buff,                          /* -> buffer to receive data*/
-REG     size_t  bytes)                          /* =  # bytes to xfer       */
+        FD      *fp,                            /* -> ccb for the file      */
+        BYTE    *buff,                          /* -> buffer to receive data*/
+        size_t  bytes)                          /* =  # bytes to xfer       */
 {                                               /****************************/
 
 
-REG     BYTE    *p1;                            /* Temp byte pointer        */
+        BYTE    *p1;                            /* Temp byte pointer        */
         BYTE    c;                              /* Temp char                */
         LONG    xsector;                        /* Temp sector number       */
         LONG    xbytes;                         /* byte count temp          */

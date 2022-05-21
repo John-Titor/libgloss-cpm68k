@@ -35,7 +35,7 @@ ssize_t read(                                   /* CLEAR FUNCTION ***********/
         void    *buff,                          /* -> buffer start          */
         size_t  bytes)                          /* =  byte count to read    */
 {                                               /****************************/
-REG     FD      *fp;                            /* -> ccb to read from      */
+        FD      *fp;                            /* -> ccb to read from      */
                                                 /****************************/
         if((fp=_chkc(fd)) == NULLFD)            /* File open & OK??         */
                 return(FAILURE);                /*      No: EBADF           */

@@ -26,9 +26,9 @@ extern WORD _chkuser(WORD newu);
 extern void _uchkuser(WORD newu, WORD prevu);
 
 // creat.c
-extern WORD _creat(BYTE *fname, WORD prot, WORD type);
-extern WORD creata(BYTE *fname, WORD prot);
-extern WORD creatb(BYTE *fname, WORD prot);
+extern WORD _creat(BYTE *fname, WORD type);
+extern WORD creata(BYTE *fname);
+extern WORD creatb(BYTE *fname);
 
 // filesz.c
 extern off_t _filesz(int fd);
@@ -37,15 +37,15 @@ extern off_t _filesz(int fd);
 extern ssize_t _lstout(BYTE *buffer);
 
 // __main.c
-extern VOID __main(BYTE *com, WORD len);
+extern void __main(BYTE *com, WORD len);
 
 // _main.c
-extern BYTE *__tname;
-extern BYTE *__lname;
+extern const BYTE * const __tname;
+extern const BYTE * const __lname;
 extern int _main(uintptr_t basepage);
 
 // __open.c
-extern WORD __open(WORD ch, REG BYTE *filnam, WORD bdosfunc);
+extern WORD __open(WORD ch, BYTE *filnam, WORD bdosfunc);
 
 // open.c
 extern WORD _open (BYTE *fname, WORD mode, WORD xtype);
@@ -54,13 +54,13 @@ extern WORD openb(BYTE *fname, WORD mode);
 
 
 // parsefn.c
-extern BYTE *_parsefn(REG BYTE *filnam, struct fcbtab *fcbp);
+extern BYTE *_parsefn(BYTE *filnam, struct fcbtab *fcbp);
 
 // rdasc.c
-extern ssize_t _rdasc(REG FD *fp, BYTE *buff, size_t bytes);
+extern ssize_t _rdasc(FD *fp, BYTE *buff, size_t bytes);
 
 // rdbin.c
-extern ssize_t _rdbin(REG FD *fp, BYTE *buff, size_t bytes);
+extern ssize_t _rdbin(FD *fp, BYTE *buff, size_t bytes);
 
 // sbrk.c
 extern void *brk(void *_newbrk);
@@ -79,10 +79,10 @@ extern WORD ttyinraw(WORD chktype);
 extern ssize_t _ttyout(BYTE *buf);
 
 // wrtasc.c
-extern ssize_t _wrtasc(REG FD *fp, const BYTE *buff, size_t bytes);
+extern ssize_t _wrtasc(FD *fp, const BYTE *buff, size_t bytes);
 
 // wrtbin.c
-extern ssize_t _wrtbin(REG FD *fp, const BYTE *buff, size_t bytes);
+extern ssize_t _wrtbin(FD *fp, const BYTE *buff, size_t bytes);
 
 // wrtchr.c
 extern ssize_t _wrtchr(FD *fp, const BYTE *buf, size_t bytes);

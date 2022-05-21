@@ -35,12 +35,12 @@
 
 ssize_t _wrtbin(                                /****************************/
                                                 /*                          */
-REG     FD      *fp,                            /* -> CCB                   */
+        FD      *fp,                            /* -> CCB                   */
         const BYTE *buff,                       /* -> User's buffer         */
         size_t  bytes)                          /* # bytes to write         */
 {                                               /****************************/
 
-REG     UWORD   nbs;                            /* counter                  */
+        UWORD   nbs;                            /* counter                  */
         UWORD   xsector;                        /* Current sector           */
         UWORD   nsector;                        /* Multi-sector count       */
         UWORD   written;                        /* # bytes to written       */
@@ -107,12 +107,12 @@ REG     UWORD   nbs;                            /* counter                  */
         }                                       /****************************/
                                                 /****************************/
         if( bytes > 0 ) {                       /* Any room/data to buffer? */
-            ASSERT( fp->flags & DIRTY  == 0 );  /* Buffer should be clean   */
+            assert( fp->flags & DIRTY  == 0 );  /* Buffer should be clean   */
             if( OFFSECT > HIWSECT)              /* Within the hiwater area? */
                  blkfill(fp->buffer,0,SECSIZ);  /* No: Zero out the buffer  */
             else if(_blkio(fp,(LONG)xsector,fp->buffer,1L,B_READ) != 1) 
                  RETERR(FAILURE,EIO);           /* Can't preread buffer     */
-            ASSERT( bytes < SECSIZ );           /* Should be cut to size    */
+            assert( bytes < SECSIZ );           /* Should be cut to size    */
             blkmove(fp->buffer,buff,bytes);     /* Move into write buffer   */
             fp->flags |= DIRTY;                 /* Mark buffer              */
             fp->sector = xsector;               /*   and label              */

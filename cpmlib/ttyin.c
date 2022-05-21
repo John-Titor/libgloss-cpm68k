@@ -36,10 +36,10 @@
 
 ssize_t _ttyin(                                 /****************************/
         FD      *fp,                            /* -> filedes               */
-REG     BYTE    *buff,                          /* -> user's buffer         */
+        BYTE    *buff,                          /* -> user's buffer         */
         size_t  bytes)                          /* =  requested byte count  */
 {                                               /****************************/
-REG     BYTE    *p;                             /* Temp pointer             */
+        BYTE    *p;                             /* Temp pointer             */
         BYTE    ttybuf[Bytesized+2];            /* Biggest line from tty    */
         UWORD   xbytes,                         /* Returned byte count      */
                 nbs;                            /* Number to read           */
@@ -48,7 +48,7 @@ REG     BYTE    *p;                             /* Temp pointer             */
         {                                       /****************************/
 /****************************************************************************/
 #ifdef RAWIO
-                LOCAL   struct sgttyb *tyb;     /* TTY info ptr (at fp->fcb)*/
+                struct sgttyb *tyb;             /* TTY info ptr (at fp->fcb)*/
                 tyb = (struct sgttyb *)&(fp->fcb); /* assume info stored here  */
                 if(tyb->sg_flags & RAW)         /* are we in raw mode?      */
                 {                               /*                          */

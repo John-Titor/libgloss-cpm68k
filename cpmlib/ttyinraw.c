@@ -50,12 +50,12 @@
 #include "osiferr.h"
 //#include "osattr.h"
                                                 /****************************/
-MLOCAL WORD CharInReq = 0xFF;                   /* Default CONIO Char In Rqs*/
+static WORD CharInReq = 0xFF;                   /* Default CONIO Char In Rqs*/
                                                 /****************************/
 static WORD _ttyinraw(                          /*                          */
     WORD DoWait)                                /* Wait for key press?      */
 {                                               /****************************/
-        REG WORD ic;                            /* Input Char               */
+        WORD ic;                                /* Input Char               */
                                                 /*                          */
         while((ic=__OSIF(CONIO,CharInReq))==0)  /* Wait in loop if needed   */
         {                                       /*                          */

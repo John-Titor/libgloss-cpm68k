@@ -35,13 +35,13 @@ ssize_t _wrtchr(                                /****************************/
         BYTE    cp[SECSIZ];                     /* ptr to local buffer      */
         WORD    col;                            /* column counter           */
         WORD    nsp;                            /* temp counter             */
-        ssize_t (*fnout)(BYTE *buf);      /* func placeholder         */
-        int     DoAscii;                        /* Flag: xlate newlines?    */
-        int     DoXTabs;                        /* Flag: xpand tabs?        */
+        ssize_t (*fnout)(BYTE *buf);            /* func placeholder         */
+        bool    DoAscii;                        /* Flag: xlate newlines?    */
+        bool    DoXTabs;                        /* Flag: xpand tabs?        */
         struct sgttyb *tyb;                     /* Special TTY ptr          */
                                                 /*                          */
-        DoAscii = TRUE;                         /* Default: xlate newlines  */
-        DoXTabs = FALSE;                        /* Default: no expand tabs  */
+        DoAscii = true;                         /* Default: xlate newlines  */
+        DoXTabs = false;                        /* Default: no expand tabs  */
         if( fp->flags & ISTTY )                 /* If TTY Output            */
                 fnout = _ttyout;                /*   use that function      */
         else if( fp->flags & ISLPT )            /* If LST Output            */
@@ -50,7 +50,7 @@ ssize_t _wrtchr(                                /****************************/
                 RETERR(-1,ENOTTY);              /*   that's an error        */
         if( fp->flags & ISSPTTY )               /* Special Output handling? */
         {                                       /*   yes...                 */
-                tyb = (struct sgttyb*)&(fp->fcb); /* assume info stored here  */ // XXX should be a union
+                tyb = (struct sgttyb*)&(fp->fcb); /* assume info stored here*/
                 DoXTabs = (tyb->sg_flags) & XTABS;
         }                                       /*                          */
                                                 /****************************/

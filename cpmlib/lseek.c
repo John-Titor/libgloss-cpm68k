@@ -43,7 +43,7 @@ LONG    lseek(                                  /* CLEAR FUNCTION ***********/
                                                 /****************************/
 {
                                                 /****************************/
-REG     FD      *fp;                            /* File pointer             */
+        FD      *fp;                            /* File pointer             */
                                                 /*                          */
         if((fp = _chkc(fd)) == NULLFD)          /* Convert to pointer       */
                 RETERR(FAILURE,EBADF);          /*   Can't                  */

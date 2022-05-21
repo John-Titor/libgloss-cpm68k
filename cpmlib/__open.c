@@ -39,20 +39,20 @@
 WORD    __open(                                 /****************************/
                                                 /*                          */
         WORD    ch,                             /* Channel number           */
-REG     BYTE    *filnam,                        /* -> filename              */
+        BYTE    *filnam,                        /* -> filename              */
         WORD    bdosfunc)                       /* BDOS Function            */
 {                                               /****************************/
         FD      *fp;                            /* -> ccb area              */
-REG     struct fcbtab   *fcbp;                  /* -> FCB area in ccb       */
-REG     WORD    rv;                             /* Return value             */
-REG     WORD    xuser;                          /* User number              */
+        struct fcbtab   *fcbp;                  /* -> FCB area in ccb       */
+        WORD    rv;                             /* Return value             */
+        WORD    xuser;                          /* User number              */
                                                 /****************************/
                                                 /*                          */
         fp = _getccb(ch);                       /* Fetch ccb pointer        */
         fcbp = &(fp ->fcb);                     /* Fetch fcb pointer        */
         rv = SUCCESS;                           /* Default to success       */
                                                 /****************************/
-        if( _parsefn(filnam,fcbp) != NULLPTR )  /* Parse filnam into fcb    */
+        if( _parsefn(filnam,fcbp) != NULL )     /* Parse filnam into fcb    */
                 RETERR(FAILURE,EINVAL);         /* Quit if name not ok      */
         if(fcbp->fuser)                         /* User # specified?        */
                 fp->user = fcbp->fuser;         /* put it where we use it   */

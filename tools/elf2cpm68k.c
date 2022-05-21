@@ -489,7 +489,6 @@ write_cpm_relocs(elf_file_t *ef, FILE *cfp)
         write_out("relocation", cfp, &relword, sizeof(relword));
         rel_index++;
         current_vma+=4;
-        /* XXX */
     }
     /* pad to the end of the file */
     zerofill("relocation padding", cfp, ef->data_vmaddr + ef->data_filesize - current_vma);
@@ -509,7 +508,7 @@ write_cpm(elf_file_t *ef, FILE *cfp)
     WRITE32(ch.fh_bsslen, ef->bss_memsize);
     WRITE32(ch.fh_symlen, 0);
     WRITE32(ch.fh_pad, 0);
-    WRITE32(ch.fh_entry, 0);    /* XXX ??? */
+    WRITE32(ch.fh_entry, 0);            /* seems to be ignored */
     WRITE16(ch.fh_flags, ef->rel_count ? FH_WITH_RELOC : FH_NO_RELOC);
 
     write_out("CP/M-68k exec header", cfp, &ch, sizeof(ch));

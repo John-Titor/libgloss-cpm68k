@@ -26,10 +26,10 @@
 off_t _filesz(                                  /****************************/
         int fd)                                 /* file descriptor          */
 {
-        REG     FD      *fp;                    /* file's ccb pointer       */
-        REG     BYTE    *p1, *p2;               /* temps for buffer work    */
-        REG     LONG    xsector;                /* where we are in file     */
-        REG     WORD    xuser;                  /* Current user #           */
+        FD      *fp;                            /* file's ccb pointer       */
+        BYTE    *p1, *p2;                       /* temps for buffer work    */
+        LONG    xsector;                        /* where we are in file     */
+        WORD    xuser;                          /* Current user #           */
                                                 /****************************/
         if((fp = _chkc(fd)) == NULLFD)          /* Convert to pointer       */
                 return(FAILURE);                /*  Can't: EBADF            */

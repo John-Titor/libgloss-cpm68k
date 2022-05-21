@@ -30,11 +30,11 @@
 static char eof = '\x1a';                       /* End of file for ASCII    */
                                                 /****************************/
 int    close(                                   /* CLEAR FUNCTION ***********/
-REG     int     fd)                             /* File descriptor to close */
+        int     fd)                             /* File descriptor to close */
 {                                               /****************************/
-REG     FD      *fp;                            /* file pointer Temporary   */
-REG     WORD    rv;                             /* return value             */
-REG     WORD    xuser;                          /* User number temporary    */
+        FD      *fp;                            /* file pointer Temporary   */
+        WORD    rv;                             /* return value             */
+        WORD    xuser;                          /* User number temporary    */
                                                 /*                          */
         if((fp=_chkc(fd)) == NULLFD)            /* File Open?               */
             RETERR(FAILURE,EBADF);              /*              no, quit    */

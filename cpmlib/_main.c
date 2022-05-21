@@ -10,8 +10,8 @@
 #include "prototypes.h"
 #include "osif.h"
 
-BYTE *__tname = "CON:"; // XXX TODO constify
-BYTE *__lname = "LST:";
+const BYTE * const __tname = "CON:";
+const BYTE * const __lname = "LST:";
 
 static void parse_args(char *tail, int *argcp, char ***argvp);
 static void add_arg(char *arg, int *argcp, char ***argvp);

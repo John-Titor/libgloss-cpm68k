@@ -9,10 +9,10 @@
 *       (currently ascii).
 *
 *       Calling Sequence:
-*               fid = creat(fname,prot)
-*               fid = creata(fname,prot)
-*               fid = creatb(fname,prot)
-*               fid = _creat(fname,prot,type);
+*               fid = creat(fname)
+*               fid = creata(fname)
+*               fid = creatb(fname)
+*               fid = _creat(fname,type);
 *
 *       Where:
 *
@@ -28,11 +28,10 @@
 
 WORD    _creat (                                /****************************/
         BYTE    *fname,                         /* -> File name             */
-        WORD    prot __unused,                  /* Open mode                */ // XXX TODO remove
         WORD    type)                           /* ASCII/BINARY flag        */
 {                                               /****************************/
-        REG  WORD ich;                          /* Channel number for open  */
-        REG  FD         *ch;                    /* -> CCB for channel       */
+        WORD ich;                               /* Channel number for open  */
+        FD         *ch;                         /* -> CCB for channel       */
                                                 /*                          */
         if((ich = _allocc()) == FAILURE)        /* Allocate a channel       */
                 return (FAILURE);               /*      Can't (EMFILE)      */
@@ -62,16 +61,16 @@ WORD    _creat (                                /****************************/
 }                                               /****************************/
 
 #if 0
-WORD    creat(fname,prot)                       /* CLEAR FUNCTION ***********/
-    BYTE *fname; WORD prot;
-{       return(_creat(fname,prot,0));   }       /* default to ascii         */
+WORD    creat(fname)                            /* CLEAR FUNCTION ***********/
+    BYTE *fname
+{       return(_creat(fname,0));   }            /* default to ascii         */
 #endif
 
 WORD    creata(                                 /* CLEAR FUNCTION ***********/
-    BYTE *fname, WORD prot)
-{       return(_creat(fname,prot,0));   }       /* ascii file open          */
+    BYTE *fname)
+{       return(_creat(fname,0));   }            /* ascii file open          */
 
 WORD    creatb(                                 /* CLEAR FUNCTION ***********/
-    BYTE *fname, WORD prot)
-{       return(_creat(fname,prot,1));   }       /* binary file open         */
+    BYTE *fname)
+{       return(_creat(fname,1));   }            /* binary file open         */
 

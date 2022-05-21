@@ -6,9 +6,6 @@
  *                                                                          
  *      The _blkio function is used to read / write a set of contiguous     
  *      sectors in an open file.                                            
- *      Note: if CPM, it will use CP/M function 44 (Set Multi-Sector Count) 
- *      if os_multisectorio is TRUE (BDOS versions 3.0 and above).          
- *      Note 2: if PC-DOS, it will use block read and write functions.      
  *                                                                          
  *      Edits:                                                              
  *              8-Dec-83 whf    handle PC-DOS changes.                      

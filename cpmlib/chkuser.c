@@ -20,8 +20,7 @@
 WORD _chkuser(                                  /*                          */
         WORD    newu)                          /* Desired user number      */
 {                                               /****************************/
-#if CPM    /*===============================================================*/
-REG     WORD    prevu;                          /* Previous user number     */
+        WORD    prevu;                          /* Previous user number     */
                                                 /****************************/
         if( newu == 0 )                         /* Default user # desired?  */
                 return 0;                       /*   Yes, return            */
@@ -29,9 +28,6 @@ REG     WORD    prevu;                          /* Previous user number     */
         if( newu != prevu )                     /* Are they different?      */
                 __OSIF(USER,newu-1);            /*   Yes, set to desired u# */
         return prevu;                           /* Return the previous      */
-#else      /*===============================================================*/
-        return 0;
-#endif     /*===============================================================*/
 }                                               /****************************/
 
                                                 /****************************/
@@ -39,13 +35,9 @@ void _uchkuser(                                 /*                          */
         WORD    newu,                           /* Desired user number      */
         WORD    prevu)                          /* Previous user number     */
 {                                               /****************************/
-#if CPM    /*===============================================================*/
         if( newu == 0 )                         /* Default user #?          */
                 return;                         /*   assume no change       */
         if( newu != prevu )                     /* Are they different?      */
                 __OSIF(USER,prevu-1);           /*   Yes, set to what it was*/
-#else      /*===============================================================*/
-        return 0;
-#endif     /*===============================================================*/
 }                                               /****************************/
 

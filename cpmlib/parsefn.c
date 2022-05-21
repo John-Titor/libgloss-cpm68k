@@ -12,7 +12,7 @@
  *                                                                          
  *      Where:                                                              
  *              filnam  Is a null-terminated CP/M filename                  
- *              ret     Is NULLPTR if entire string parsed,                 
+ *              ret     Is NULL if entire string parsed,                 
  *                        -1 if there was an error, or                      
  *                        a pointer to the next item to parse               
  *              fcbp    Is the address of a CP/M File Control Block (fcb).  
@@ -33,13 +33,13 @@
 #include "osif.h"
 #include "prototypes.h"
 
-MLOCAL VOID _strcpy(REG BYTE *s, REG BYTE *d, REG WORD c);
-MLOCAL BYTE *get_token(REG BYTE *src, REG BYTE *dest, REG WORD len);
-MLOCAL WORD stuff_drive(struct fcbtab *fcbp, REG BYTE *src);
+static void _strcpy(BYTE *s, BYTE *d, WORD c);
+static BYTE *get_token(BYTE *src, BYTE *dest, WORD len);
+static WORD stuff_drive(struct fcbtab *fcbp, BYTE *src);
 
     BYTE *                                      /****************************/
 _parsefn(                                       /*                          */
-    REG BYTE            *filnam,                /* -> filename              */
+    BYTE            *filnam,                    /* -> filename              */
     struct fcbtab       *fcbp)                  /* -> FCB address           */
 {                                               /****************************/
 
@@ -82,16 +82,16 @@ _parsefn(                                       /*                          */
           case '\0':                            /* Null terminated          */
           case '\n':                            /* CCPM compatible          */
           case '\r':                            /*   "      "               */
-                return NULLPTR;                 /* everything a-ok          */
+                return NULL;                    /* everything a-ok          */
         }                                       /****                       */
         return FAILPTR;                         /* Not legal file name      */
 }                                               /****************************/
 
 
-MLOCAL VOID _strcpy(                            /* Special string copy func */
-REG     BYTE    *s,                             /* Source string            */
-REG     BYTE    *d,                             /* Destination area         */
-REG     WORD     c)                             /* Count                    */
+static void _strcpy(                            /* Special string copy func */
+        BYTE    *s,                             /* Source string            */
+        BYTE    *d,                             /* Destination area         */
+        WORD     c)                             /* Count                    */
 {                                               /****************************/
         while ((*s) && (c))                     /*                          */
         {                                       /*                          */
@@ -119,11 +119,11 @@ REG     WORD     c)                             /* Count                    */
 /*              ret     is the returned address of the delimiter            */
 /*                                                                          */
 /****************************************************************************/
-MLOCAL BYTE *_delim="<>.,=:|[]*\n\r";           /* Delimiter set            */
-MLOCAL BYTE *get_token(                         /*                          */
-REG     BYTE    *src,                           /* -> source                */
-REG     BYTE    *dest,                          /* -> destination           */
-REG     WORD     len)                           /* output area size         */
+static BYTE *_delim="<>.,=:|[]*\n\r";           /* Delimiter set            */
+static BYTE *get_token(                         /*                          */
+        BYTE    *src,                           /* -> source                */
+        BYTE    *dest,                          /* -> destination           */
+        WORD     len)                           /* output area size         */
 {                                               /****************************/
         while(*src && (!strchr(_delim,*src)) && len)/* Until done           */
         {                                       /*                          */
@@ -151,11 +151,11 @@ REG     WORD     len)                           /* output area size         */
 /*              ret     Is SUCCESS if ok, FAILURE o.w.                      */
 /*                                                                          */
 /****************************************************************************/
-MLOCAL  WORD    stuff_drive(                    /*                          */
+static  WORD    stuff_drive(                    /*                          */
         struct fcbtab *fcbp,                    /* -> FCB area              */
-REG     BYTE    *src)                           /* -> Source string         */
+        BYTE    *src)                           /* -> Source string         */
 {                                               /****************************/
-REG     WORD    i;                              /* Accumulator              */
+        WORD    i;                              /* Accumulator              */
         i = 0;                                  /* Zap to zero              */
         while(isdigit(*src))                    /* As long as source is dig.*/
         {                                       /*                          */
