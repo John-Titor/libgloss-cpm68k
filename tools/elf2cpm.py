@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Convert m68k ELF to CP/M-68K executable
 #

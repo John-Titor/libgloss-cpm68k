@@ -2,3 +2,4 @@
 build
 *.pyc
 trace.out
+*.sublime-project

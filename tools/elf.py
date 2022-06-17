@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Minimal ELF reader
 #
@@ -162,8 +162,8 @@ class ELFLoader(object):
             raise RuntimeError('data segment @ 0x{:x} does not follow text 0x{:x}/0x{:x}'.format(
                 dataAddress, textAddress, textSize))
 
-        text = textSegment.data().ljust(textSize, '\0')
-        data = dataSegment.data().ljust(dataSize, '\0')
+        text = textSegment.data().ljust(textSize, b'\0')
+        data = dataSegment.data().ljust(dataSize, b'\0')
 
         if len(text) != textSize:
             raise RuntimeError('text size mismatch')

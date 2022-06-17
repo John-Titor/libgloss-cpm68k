@@ -337,14 +337,14 @@ load_elf_relocs(elf_file_t *ef)
             }
 
             ef->rel_data[ef->rel_count++] = rel_offset | rel_target_type;
-/*            fprintf(stderr, "rel: 0x%lx\n", rel_offset | rel_target_type); */
+            //fprintf(stderr, "rel: 0x%lx\n", rel_offset | rel_target_type);
         }
     }
     for (rel_index = 1; rel_index < ef->rel_count; rel_index++) {
         uint32_t prev_rel = ef->rel_data[rel_index - 1] & ~REL_TYPE_MASK;
         uint32_t this_rel = ef->rel_data[rel_index] & ~REL_TYPE_MASK;
         if (this_rel < prev_rel) {
-            error("relocations not sorted");
+            error("relocations not sorted (0x%x < 0x%x)", this_rel, prev_rel);
         }
     }
 }

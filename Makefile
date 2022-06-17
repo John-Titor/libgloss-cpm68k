@@ -1,6 +1,7 @@
 
-TOOL_PREFIX	 = m68k-elf-
-ELF2CPM		 = build/elf2cpm68k
+TOOL_PREFIX	 = m68k-unknown-elf-
+#ELF2CPM		 = build/elf2cpm68k
+ELF2CPM		 = tools/elf2cpm.py
 MAKE_DISK	 = ../Tiny68k/make_disk.sh
 SIM		 = ../Emulators/py68k/py68k.py
 SIM_ROM		 = ../Tiny68k/ROM/T68kbug_r07.BIN
@@ -93,9 +94,6 @@ $(COBJS):build/%.o:%.c
 $(CXXOBJS):build/%.o:%.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CFLAGS) -c -o $@ $<
-
-$(ELF2CPM): tools/elf2cpm68k.c
-	cc -Wall $< -o $@
 
 -include $(OBJS:.o=.d)
 

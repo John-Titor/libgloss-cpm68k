@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include <dirent.h>
 
 #define O_BINARY  0x10000   // XXX should be in a header
 
@@ -13,6 +12,22 @@ _err(const char *msg)
 {
     printf("ERROR: %s\n", msg);
     exit(1);
+}
+
+static void __attribute__((constructor(101))) test_constructor(void);
+
+static void
+test_constructor(void)
+{
+    printf("constructor\n");
+}
+
+static void __attribute__((destructor(101))) test_destructor(void);
+
+static void
+test_destructor(void)
+{
+    printf("destructor\n");
 }
 
 int 
